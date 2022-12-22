@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 
 class SearchTableViewController: UITableViewController {
@@ -22,10 +23,14 @@ class SearchTableViewController: UITableViewController {
     }()
     
     
+    private let apiService = APIService()
+    private var cancellables = Set<AnyCancellable>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTitle()
         setupNavigationBar()
+        performSearch()
     }
 }
 
@@ -76,5 +81,23 @@ extension SearchTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! SearchTableViewCell
         return cell
+    }
+}
+
+
+// MARK: - Private Helpers
+
+
+extension SearchTableViewController {
+    
+    func performSearch() {
+        
+        apiService.fetchSymbolsPublisher(keywords: "S&P500")
+            .sink { _ in
+                
+            } receiveValue: { results in
+                print(results.items)
+            }
+            .store(in: &cancellables)
     }
 }
