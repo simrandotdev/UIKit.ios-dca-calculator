@@ -62,3 +62,19 @@ extension SearchTableViewController: UISearchResultsUpdating {
 extension SearchTableViewController: UISearchControllerDelegate {
     
 }
+
+
+// MARK: - UITableViewDataSource
+
+
+extension SearchTableViewController {
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! SearchTableViewCell
+        return cell
+    }
+}
