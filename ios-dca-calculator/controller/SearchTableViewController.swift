@@ -35,7 +35,13 @@ class SearchTableViewController: UITableViewController {
             tableView.reloadData()
         }
     }
-    @Published private var mode: Mode = .onboarding
+    @Published private var mode: Mode = .onboarding {
+        didSet {
+            if mode == .onboarding {
+                searchResults = nil
+            }
+        }
+    }
     @Published private var searchQuery: String = ""
     
     override func viewDidLoad() {
@@ -75,7 +81,6 @@ extension SearchTableViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchQuery = searchController.searchBar.text,
         !searchQuery.isEmpty else {
-            self.searchResults = nil
             self.mode = .onboarding
             return
         }
