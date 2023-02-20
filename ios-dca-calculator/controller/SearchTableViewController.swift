@@ -25,12 +25,13 @@ class SearchTableViewController: UITableViewController {
     
     private let apiService = APIService()
     private var cancellables = Set<AnyCancellable>()
+    @Published private var searchQuery: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTitle()
         setupNavigationBar()
-        performSearch()
+        observeForm()
     }
 }
 
@@ -56,7 +57,9 @@ extension SearchTableViewController {
 extension SearchTableViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        
+        guard let searchQuery = searchController.searchBar.text,
+        !searchQuery.isEmpty else { return }
+        self.searchQuery = searchQuery
     }
 }
 
@@ -88,15 +91,25 @@ extension SearchTableViewController {
 // MARK: - Private Helpers
 
 
-extension SearchTableViewController {
+private extension SearchTableViewController {
     
-    func performSearch() {
+    func performSearch(_ keywords: String) {
         
-        apiService.fetchSymbolsPublisher(keywords: "S&P500")
+        apiService.fetchSymbolsPublisher(keywords: keywords)
             .sink { _ in
                 
             } receiveValue: { results in
                 print(results.items)
+            }
+            .store(in: &cancellables)
+    }
+    
+    func observeForm() {
+        
+        $searchQuery
+            .debounce(for: 0.85, scheduler: RunLoop.main)
+            .sink { searchQuery in
+                self.performSearch(searchQuery)
             }
             .store(in: &cancellables)
     }
