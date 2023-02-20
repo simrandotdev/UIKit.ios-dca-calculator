@@ -25,6 +25,7 @@ class SearchTableViewController: UITableViewController {
     
     private let apiService = APIService()
     private var cancellables = Set<AnyCancellable>()
+    private var searchResults: SearchResults?
     @Published private var searchQuery: String = ""
     
     override func viewDidLoad() {
@@ -78,11 +79,15 @@ extension SearchTableViewController: UISearchControllerDelegate {
 extension SearchTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return searchResults?.items.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellId", for: indexPath) as! SearchTableViewCell
+        if let searchResults {
+            let result = searchResults.items[indexPath.row]
+            cell.config(with: result)
+        }
         return cell
     }
 }
@@ -98,8 +103,9 @@ private extension SearchTableViewController {
         apiService.fetchSymbolsPublisher(keywords: keywords)
             .sink { _ in
                 
-            } receiveValue: { results in
-                print(results.items)
+            } receiveValue: { [weak self] results in
+                self?.searchResults = results
+                self?.tableView.reloadData()
             }
             .store(in: &cancellables)
     }
@@ -108,8 +114,8 @@ private extension SearchTableViewController {
         
         $searchQuery
             .debounce(for: 0.85, scheduler: RunLoop.main)
-            .sink { searchQuery in
-                self.performSearch(searchQuery)
+            .sink { [weak self] searchQuery in
+                self?.performSearch(searchQuery)
             }
             .store(in: &cancellables)
     }
