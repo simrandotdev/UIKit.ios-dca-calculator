@@ -10,6 +10,7 @@
 		3D46BAF82954CFE80005064B /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D46BAF72954CFE80005064B /* APIService.swift */; };
 		3D46BAFA2955075D0005064B /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D46BAF92955075D0005064B /* SearchResults.swift */; };
 		3D46BAFC295507790005064B /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D46BAFB295507790005064B /* SearchResult.swift */; };
+		3D7A680C29A5183A00272587 /* TimeSeriesMonthlyAdjusted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D7A680B29A5183A00272587 /* TimeSeriesMonthlyAdjusted.swift */; };
 		7556C77D954AE0DADFC444FF /* Pods_ios_dca_calculator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05B97198EE429EF29B180081 /* Pods_ios_dca_calculator.framework */; };
 		8D248AE225773B46003C28E5 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D248AE125773B46003C28E5 /* Double+Extensions.swift */; };
 		8D248AE525787F38003C28E5 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D248AE425787F38003C28E5 /* UIColor+Extensions.swift */; };
@@ -46,6 +47,7 @@
 		3D46BAF72954CFE80005064B /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		3D46BAF92955075D0005064B /* SearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
 		3D46BAFB295507790005064B /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
+		3D7A680B29A5183A00272587 /* TimeSeriesMonthlyAdjusted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSeriesMonthlyAdjusted.swift; sourceTree = "<group>"; };
 		70A85B74BB2FB3BF026AD7CB /* Pods-ios-dca-calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-dca-calculator.debug.xcconfig"; path = "Target Support Files/Pods-ios-dca-calculator/Pods-ios-dca-calculator.debug.xcconfig"; sourceTree = "<group>"; };
 		8D248AE125773B46003C28E5 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		8D248AE425787F38003C28E5 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			children = (
 				3D46BAF92955075D0005064B /* SearchResults.swift */,
 				3D46BAFB295507790005064B /* SearchResult.swift */,
+				3D7A680B29A5183A00272587 /* TimeSeriesMonthlyAdjusted.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D47F0C725748CC40091DE29 /* DateSelectionTableViewController.swift in Sources */,
+				3D7A680C29A5183A00272587 /* TimeSeriesMonthlyAdjusted.swift in Sources */,
 				8DEE060B2512676A0021EDA5 /* SearchTableViewController.swift in Sources */,
 				8D31652325761318005D4078 /* Int+Extensions.swift in Sources */,
 				8D5B937A2557B0A0001AFD86 /* String+Extensions.swift in Sources */,

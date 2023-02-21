@@ -17,6 +17,11 @@ struct APIService {
     let keys = ["53ESL15XW9ZIQ97F", "A7O2IV5QO538AUOL", "0TFQQ6KBK1O0KTQJ"]
     
     func fetchSymbolsPublisher(keywords: String) -> AnyPublisher<SearchResults, Error> {
+        
+        guard let keywords = keywords.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            return Fail(error: URLError(.unsupportedURL)).eraseToAnyPublisher()
+        }
+        
         let urlString = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=\(keywords)&apikey=\(API_KEY)"
         
         guard let url = URL(string: urlString) else {
@@ -31,6 +36,31 @@ struct APIService {
             .decode(type: SearchResults.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
+    
+    
+    func fetchTimeSeriesMonthlyAdjustedPublisher(keywords: String) -> AnyPublisher<TimeSeriesMonthlyAdjusted, Error> {
+        
+        guard let keywords = keywords.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else {
+            return Fail(error: URLError(.unsupportedURL)).eraseToAnyPublisher()
+        }
+        
+        let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=\(keywords)&apikey=\(API_KEY)"
+        
+        guard let url = URL(string: urlString) else {
+            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+        }
+        
+        return URLSession
+            .shared
+            .dataTaskPublisher(for: url)
+            .tryMap(handleResponse)
+            .receive(on: DispatchQueue.main)
+            .decode(type: TimeSeriesMonthlyAdjusted.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+        
+    }
+    
+    
     
     private func handleResponse(data: Data, response: URLResponse) throws -> Data {
         
