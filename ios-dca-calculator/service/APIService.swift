@@ -22,19 +22,7 @@ struct APIService {
             return Fail(error: URLError(.unsupportedURL)).eraseToAnyPublisher()
         }
         
-        let urlString = "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=\(keywords)&apikey=\(API_KEY)"
-        
-        guard let url = URL(string: urlString) else {
-            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
-        }
-        
-        return URLSession
-            .shared
-            .dataTaskPublisher(for: url)
-            .tryMap(handleResponse)
-            .receive(on: DispatchQueue.main)
-            .decode(type: SearchResults.self, decoder: JSONDecoder())
-            .eraseToAnyPublisher()
+        return makeRequest(for: "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=\(keywords)&apikey=\(API_KEY)")
     }
     
     
@@ -44,7 +32,11 @@ struct APIService {
             return Fail(error: URLError(.unsupportedURL)).eraseToAnyPublisher()
         }
         
-        let urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=\(keywords)&apikey=\(API_KEY)"
+        return makeRequest(for: "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=\(keywords)&apikey=\(API_KEY)")
+    }
+    
+    
+    private func makeRequest<T: Codable>(for urlString: String) -> AnyPublisher<T, Error> {
         
         guard let url = URL(string: urlString) else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
@@ -55,11 +47,9 @@ struct APIService {
             .dataTaskPublisher(for: url)
             .tryMap(handleResponse)
             .receive(on: DispatchQueue.main)
-            .decode(type: TimeSeriesMonthlyAdjusted.self, decoder: JSONDecoder())
+            .decode(type: T.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
-        
     }
-    
     
     
     private func handleResponse(data: Data, response: URLResponse) throws -> Data {
