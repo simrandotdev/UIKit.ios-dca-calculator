@@ -120,6 +120,13 @@ extension SearchTableViewController {
         }
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let searchResults {
+            let symbol = searchResults.items[indexPath.row].symbol
+            handleSelection(for: symbol)
+        }
+    }
 }
 
 
@@ -160,5 +167,24 @@ private extension SearchTableViewController {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    private func handleSelection(for symbol: String) {
+        
+        apiService.fetchTimeSeriesMonthlyAdjustedPublisher(keywords: symbol)
+            .sink { completionResult in
+                switch completionResult {
+                case .failure(let error):
+                    print(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { timeSeriesAdjustedValue in
+                print("SUCCESS: \(timeSeriesAdjustedValue)")
+            }
+            .store(in: &cancellables)
+
+        
+//        performSegue(withIdentifier: "showCalculator", sender: nil)
     }
 }
